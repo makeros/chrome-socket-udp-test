@@ -64,19 +64,24 @@ onload = function() {
 
 /** END function data handle */
 
-var initNewPlayer = function(player_data){
-  // console.log('player data: ', player_data);
-  var player = document.createElement('div');
-  player.className += " player-box";
-  player.id = "player_"+player_data.id;
+  /**
+   * add new player
+   * @param  {[type]} player_data [description]
+   * @return {[type]}             [description]
+   */
+  var initNewPlayer = function(player_data){
+    // console.log('player data: ', player_data);
+    var player = document.createElement('div');
+    player.className += " player-box";
+    player.id = "player_"+player_data.id;
 
-  game_board.appendChild(player);
-  // console.log('create new player');
+    game_board.appendChild(player);
+    // console.log('create new player');
 
-};
-/**
- * Drawing
- */
+  };
+  /**
+   * Drawing players
+   */
   var actual_players = 0;
   var drawPlayers = function(world_data){
     var players_in_world = Object.keys(world_data).length;
@@ -100,6 +105,11 @@ var initNewPlayer = function(player_data){
     }
   };
 
+  /**
+   * sending mouse move events over game board to server
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
   var sendMouseEvents = function(event){
     cords.x = event.clientX - game_board.offsetLeft;
     cords.y = event.clientY - game_board.offsetTop;
@@ -116,31 +126,9 @@ var initNewPlayer = function(player_data){
   };
 
   /**
-   * [recvEvents description]
-   * receives world information from server with an interval
+   * receive data from server instanlty
+   * @return {[type]} [description]
    */
-  // var intervalReceive;
-
-  // var recvEvents = function(){
-
-  //   intervalReceive = setInterval(function(){
-  //     // console.log('clientSocket: ', clientSocket);
-
-  //     var json = {clientId: _CLIENT_ID, method: 'client get data'};
-
-  //     // socket.write(clientSocket, json2buf(json), function(result){
-  //     // });
-
-  //     socket.recvFrom(clientSocket,1024, function(result){
-  //         console.log('recvFrom from server: ',result, buf2json(result.data) );
-  //         var server_data = buf2json(result.data);
-
-  //         //drawPlayers(server_data);
-  //     });
-
-  //   },_DATA_THROTTLE);
-  // };
-
   var recvFromServer = function(){
     socket.recvFrom(clientSocket,1024, function(result){
         // console.log('recvFrom from server: ',result, buf2json(result.data) );
@@ -162,10 +150,7 @@ var initNewPlayer = function(player_data){
           console.log(createInfo);
           clientSocket = createInfo.socketId;
 
-          // socket.connect(clientSocket, SERVER_ADDRESS, SERVER_PORT, function(result){
-          //   console.log(result);
-          //     console.log('chrome.socket.connect: result = ' + result.toString());
-          // });
+
           var net_list = null
           chrome.socket.getNetworkList(function(list){
             console.log(list);
@@ -184,20 +169,9 @@ var initNewPlayer = function(player_data){
 
           });
 
-
-          // recvEvents();
       });
 
-      // socket.create('udp', function(createInfo){
 
-      //   clientSocketSend = createInfo.socketId;
-
-      //   socket.connect(clientSocketSend, SERVER_ADDRESS, SERVER_PORT, function(result){
-      //       console.log(result);
-      //         console.log('send chrome.socket.connect: result = ' + result.toString());
-      //   });
-
-      // });
 
   };
 

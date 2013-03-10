@@ -1,8 +1,7 @@
 var dgram = require("dgram");
 
 var server = dgram.createSocket("udp4");
-// server.setMulticastTTL(128);
-// server.addMembership('192.168.66.7') ;
+
 
 var msg;
 
@@ -13,14 +12,6 @@ var server_cords = {};
 var _DATA_THROTTLE = 16;
 
 /** BEGIN function data handle */
-  // var ab2str = function(buffer) {
-  //   var str = '';
-  //   var uArrayVal = new Uint8Array(buffer);
-  //   for(var s = 0; s < uArrayVal.length; s++) {
-  //     str += String.fromCharCode(uArrayVal[s]);
-  //   }
-  //   return str;
-  // };
 
   var str2buf = function(str) {
     var buf=new Buffer(str.length);
@@ -47,20 +38,6 @@ var _DATA_THROTTLE = 16;
 
 /** END function data handle */
 
-var sendEventsToClient = function(clientId, msg){
-
-	var buf = json2buf(msg);
-	// console.log(clients);
-	// for( var cIndex in clients){
-	// server.send(buf, 0, buf.length, /*clients[clientId].clientInfo.port*/400001, clients[clientId].clientInfo.address, function(err, bytes) {
-	// 	console.log('send to '+ clients[clientId].clientInfo.address + ' ' + clients[clientId].clientInfo.port +'message: ', buf);
-	// });
-
-
-
-	// }
-	//console.log('send: ',msg, clients);
-};
 
 var actual_users = 0;
 
@@ -83,8 +60,6 @@ setInterval(function(){
 server.on("message", function (msg, rinfo) {
 
 	var json_msg = JSON.parse(msg);
-	// console.log(json_msg,rinfo);
-	// var client_id = rinfo.address+rinfo.port.toString();
 
 	if(json_msg.method == 'client hello'){
 
@@ -95,19 +70,10 @@ server.on("message", function (msg, rinfo) {
 
 	}
 
-	// if(json_msg.method == 'client get data'){
-
-	// 		sendEventsToClient(json_msg.clientId, server_cords);
-	// }
 
 	if(json_msg.method == 'client send data'){
 		server_cords[json_msg.clientId].data = json_msg.data;
 	}
-
-
-	// console.log("server got: " + msg );
-	// console.log('server_cords: ', server_cords);
-
 
 
 });
